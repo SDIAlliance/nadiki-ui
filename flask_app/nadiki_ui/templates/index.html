@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Snapshots - NADIKI</title>
+    </head>
+    <style>
+        table {
+            border: 1px solid black;
+        }
+        td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        thead {
+            font-weight: bold;
+        }
+    </style>
+    <body>
+        <h1>Snapshots</h1>
+        <p>These are your current snapshots:</p>
+        <table>
+            <thead>
+            <tr>
+                <td>Snapshot ID</td>
+                <td>Snapshot Name</td>
+                <td>Facility ID</td>
+                <td>From</td>
+                <td>Until</td>
+                <td>State</td>
+                <td>Actions</td>
+            </tr></thead>
+            {% for s in snapshots %}
+            <tr>
+                <td>{{s.id}}</td>
+                <td>{{s.name}}</td>
+                <td>{{s.facility_id}}</td>
+                <td>{{s.time_from}}</td>
+                <td>{{s.time_until}}</td>
+                <td>{{s.state}}</td>
+                <td><a href="{{ delete_url }}?{{ {'id': s.id} | urlencode() }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p>Create a new Snapshot</p>
+        <form method="POST" action="{{insert_url}}">
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" name="name"></td>
+                    <td>From</td>
+                    <td><input type="date" name="date_from"><input type="time" name="time_from" value="00:00:00" step="1"></td>
+                </tr>
+                <tr>
+                    <td>Facility ID</td>
+                    <td>
+                        <select name="facility_id">
+                            {% for b in bucket_names %}
+                            <option value="{{b}}">{{b}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>Until</td>
+                    <td><input type="date" name="date_until"><input type="time" name="time_until" value="23:59:59" step="1"></td>
+                </tr>
+                <tr>
+                    <td colspan="4"><input type="submit"></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
