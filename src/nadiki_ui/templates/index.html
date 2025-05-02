@@ -36,8 +36,12 @@
                 <td>{{s.facility_id}}</td>
                 <td>{{s.time_from}}</td>
                 <td>{{s.time_until}}</td>
-                <td>{{s.state}}</td>
-                <td><a href="{{ delete_url }}?{{ {'id': s.id} | urlencode() }}">Delete</a></td>
+                <td>{{s.state.value}}</td>
+                <td>{#  Do not show delete link when state is new, because either the bucket does not yet exist or the Lambda is already in progress #}
+                    {% if s.state.value != "new" %}
+                    <a href="{{ delete_url }}?{{ {'id': s.id} | urlencode() }}">Delete</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </table>
@@ -48,7 +52,7 @@
                     <td>Name</td>
                     <td><input type="text" name="name"></td>
                     <td>From</td>
-                    <td><input type="date" name="date_from"><input type="time" name="time_from" value="00:00:00" step="1"></td>
+                    <td><input type="date" name="date_from" value="{{date_from}}"><input type="time" name="time_from" value="00:00:00" step="1"></td>
                 </tr>
                 <tr>
                     <td>Facility ID</td>
@@ -60,7 +64,7 @@
                         </select>
                     </td>
                     <td>Until</td>
-                    <td><input type="date" name="date_until"><input type="time" name="time_until" value="23:59:59" step="1"></td>
+                    <td><input type="date" name="date_until" value="{{date_until}}"><input type="time" name="time_until" value="23:59:59" step="1"></td>
                 </tr>
                 <tr>
                     <td colspan="4"><input type="submit"></td>
