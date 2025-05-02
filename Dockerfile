@@ -13,4 +13,4 @@ EXPOSE 8080
 
 ENTRYPOINT ["gunicorn"]
 
-CMD ["nadiki_ui:app", "-b", "0.0.0.0"]
+CMD ["nadiki_ui:app", "-b", "0.0.0.0:80"]
